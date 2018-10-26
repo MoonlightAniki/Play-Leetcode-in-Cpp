@@ -1,0 +1,60 @@
+// 350. Intersection of Two Arrays II
+// https://leetcode.com/problems/intersection-of-two-arrays-ii/
+/*
+Given two arrays, write a function to compute their intersection.
+
+Example 1:
+Input: nums1 = [1,2,2,1], nums2 = [2,2]
+Output: [2,2]
+
+Example 2:
+Input: nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+Output: [4,9]
+
+Note:
+    1. Each element in the result should appear as many times as it shows in both arrays.
+    2. The result can be in any order.
+
+Follow up:
+    1. What if the given array is already sorted? How would you optimize your algorithm?
+    2. What if nums1's size is small compared to nums2's size? Which algorithm is better?
+    3. What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+ */
+
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+class Solution {
+public:
+    vector<int> intersect(vector<int> &nums1, vector<int> &nums2) {
+        unordered_map<int, int> record;
+        for (const int &num : nums1) {
+            ++record[num];
+        }
+        vector<int> res;
+        for (const int &num : nums2) {
+            if (record[num]) {
+                --record[num];
+                res.push_back(num);
+            }
+        }
+        return res;
+    }
+};
+
+int main() {
+//    vector<int> nums1 = {4, 9, 5};
+//    vector<int> nums2 = {9, 4, 9, 8, 4};
+    vector<int> nums1 = {1, 2, 2, 1};
+    vector<int> nums2 = {2, 2};
+    vector<int> res = Solution().intersect(nums1, nums2);
+    for (const int &i : res) {
+        cout << i << " ";
+    }
+    cout << endl;
+    return 0;
+}
+// Runtime: 4 ms, faster than 100.00% of C++ online submissions for Intersection of Two Arrays II.
