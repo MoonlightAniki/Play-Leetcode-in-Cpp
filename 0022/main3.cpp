@@ -21,23 +21,22 @@ using namespace std;
 class Solution {
 public:
     vector<string> generateParenthesis(int n) {
-        vector<string> res;
-        backtrack("", 0, 0, res, n);
-        return res;
-    }
-
-private:
-    void backtrack(string s, int open, int close, vector<string> &res, int n) {
-        if (s.size() == 2 * n) {
-            res.push_back(s);
-            return;
+        vector<vector<string>> dp(n + 1);
+        dp[0] = {""};
+        for (int i = 1; i <= n; ++i) {//一共i对括号
+            // 其中j对括号在新增的一对括号内部，i-j-1对括号在外部
+            // f(i) = '(' + f(j) + ')' + f(i-j-1)
+            for (int j = 0; j < i; ++j) {
+                vector<string> in = dp[j];
+                vector<string> out = dp[i - j - 1];
+                for (int m = 0; m < in.size(); ++m) {
+                    for (int n = 0; n < out.size(); ++n) {
+                        dp[i].push_back("(" + in[m] + ")" + out[n]);
+                    }
+                }
+            }
         }
-        if (open < n) {
-            backtrack(s + "(", open + 1, close, res, n);
-        }
-        if (close < open) {
-            backtrack(s + ")", open, close + 1, res, n);
-        }
+        return dp[n];
     }
 };
 
