@@ -1,6 +1,5 @@
 // 198. House Robber
 // https://leetcode.com/problems/house-robber/
-// Time: 2018-11-04
 /*
 You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed,
 the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and
@@ -25,28 +24,33 @@ Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (m
 
 using namespace std;
 
-// Time Complexity O(n)
-// Space Complexity O(1)
 class Solution {
 public:
     int rob(vector<int> &nums) {
-        if (nums.size() == 0) {
+        memo = vector<int>(nums.size(), -1);
+        return tryRob(nums, 0);
+    }
+
+private:
+    vector<int> memo;
+
+
+    // 考虑从nums[index...nums.size-1]中偷取财物能获取的最大值
+    int tryRob(vector<int> &nums, int index) {
+        if (index >= nums.size()) {
             return 0;
         }
-        if (nums.size() == 1) {
-            return nums[0];
+
+        if (memo[index] != -1) {
+            return memo[index];
         }
-        int preMax = nums[0];
-        int curMax = max(preMax, nums[1]);
-        for (int i = 2; i < nums.size(); ++i) {
-            int temp = curMax;
-            curMax = max(
-                    curMax,//不偷取当前位置的财物
-                    preMax + nums[i]//偷取当前位置的财物
-            );
-            preMax = temp;
-        }
-        return curMax;
+
+        // 两种方案
+        memo[index] = max(
+                tryRob(nums, index + 1),//不偷取index位置的财物，考虑从nums[index+1...nums.size()-1]范围内偷取
+                nums[index] + tryRob(nums, index + 2)// 偷取index位置的财物，并考虑从nums[index+2...nums.size()-1]范围内继续偷取
+        );
+        return memo[index];
     }
 };
 
