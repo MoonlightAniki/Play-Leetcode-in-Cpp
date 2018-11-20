@@ -1,0 +1,65 @@
+// 110. Balanced Binary Tree
+// https://leetcode.com/problems/balanced-binary-tree/
+/*
+Given a binary tree, determine if it is height-balanced.
+For this problem, a height-balanced binary tree is defined as:
+a binary tree in which the depth of the two subtrees of every node never differ by more than 1.
+
+Example 1:
+Given the following tree [3,9,20,null,null,15,7]:
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Return true.
+
+Example 2:
+Given the following tree [1,2,2,3,3,null,null,4,4]:
+
+       1
+      / \
+     2   2
+    / \
+   3   3
+  / \
+ 4   4
+Return false.
+ */
+
+#include <iostream>
+
+using namespace std;
+
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+class Solution {
+public:
+    bool isBalanced(TreeNode *root) {
+        return __isBalanced(root);
+    }
+
+private:
+    int height(TreeNode *node) {
+        if (node == NULL) {
+            return 0;
+        }
+        return 1 + max(height(node->left), height(node->right));
+    }
+
+    bool __isBalanced(TreeNode *node) {
+        if (node == NULL) {
+            return true;
+        }
+        return isBalanced(node->left) && isBalanced(node->right) && abs(height(node->left) - height(node->right)) <= 1;
+    }
+};
+// Runtime: 12 ms, faster than 26.12% of C++ online submissions for Balanced Binary Tree.
