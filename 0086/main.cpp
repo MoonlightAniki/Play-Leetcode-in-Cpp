@@ -10,6 +10,7 @@ Output: 1->2->2->4->3->5
  */
 
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
